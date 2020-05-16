@@ -52,11 +52,11 @@
  * More info: https://cloud.google.com/natural-language/docs/how-to
  */
 async function analyzeText(
-  text,
-  analyze_sentiment = true,
-  analyze_entities = true,
-  analyze_syntax = true,
-  classify_content = true
+    text,
+    analyze_sentiment = true,
+    analyze_entities = true,
+    analyze_syntax = true,
+    classify_content = true
 ) {
   const language = require("@google-cloud/language"); // Imports the Google cloud client library
   const client = new language.LanguageServiceClient(); // Create client
@@ -65,7 +65,7 @@ async function analyzeText(
   // Detect the sentiment of the document, if requested
   let sentiment_result = null;
   if (analyze_sentiment) {
-    [sentiment_result_raw] = await client.analyzeSentiment({ document });
+    let [sentiment_result_raw] = await client.analyzeSentiment({ document });
     sentiment_result = [
       {
         magnitude: sentiment_result_raw.documentSentiment.magnitude,
@@ -84,14 +84,14 @@ async function analyzeText(
   // Detect the entities of the document, if requested
   let entity_result = null;
   if (analyze_entities) {
-    [entity_result_raw] = await client.analyzeEntities({ document });
+    let [entity_result_raw] = await client.analyzeEntities({ document });
     entity_result = entity_result_raw.entities;
   }
 
   // Detect the syntax of the document, if requested
   let syntax_result = null;
   if (analyze_syntax) {
-    [syntax_result_raw] = await client.analyzeSyntax({ document });
+    let [syntax_result_raw] = await client.analyzeSyntax({ document });
     syntax_result = [];
     for (const token of syntax_result_raw.tokens) {
       syntax_result.push({
@@ -104,7 +104,7 @@ async function analyzeText(
   // Classify the content of the document, if requested
   let classify_result = null;
   if (classify_content) {
-    [classify_result_raw] = await client.classifyText({ document });
+    let [classify_result_raw] = await client.classifyText({ document });
     classify_result = [];
     for (const category of classify_result_raw.categories) {
       classify_result.push({
@@ -116,67 +116,94 @@ async function analyzeText(
 
   return [sentiment_result, entity_result, syntax_result, classify_result];
 }
+async function analyzeTextWrapper(
+    text,
+    analyze_sentiment = true,
+    analyze_entities = true,
+    analyze_syntax = true,
+    classify_content = true
+) {
+  try {
+    [
+      sentiment_result, entity_result, syntax_result, classify_result
+    ] = await analyzeText(
+        text, analyze_sentiment, analyze_entities, analyze_syntax, classify_content
+    );
+  } catch(err) {
+    let sentiment_result_dummy = [{magnitude: 0, score: 0}];
+    let entity_result_dummy = [{name: 'dummy_name', type: 'OTHER', salience: 0}];
+    let syntax_result_dummy = [{word: 'dummy_word', partOfSpeech: 'NOUN'}];
+    let classify_result_dummy = [{name: 'dummy_category', confidence: 0}];
+    return [
+      analyze_sentiment ? sentiment_result_dummy : null,
+      analyze_entities ? entity_result_dummy : null,
+      analyze_syntax ? syntax_result_dummy : null,
+      classify_content ? classify_result_dummy : null,
+    ];
+  }
+}
 
 text =
-  "What the fuck did you just fucking say about me, you little bitch? I'll have you know I\n" +
-  "graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on\n" +
-  "Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper\n" +
-  "in the entire US armed forces. You are nothing to me but just another target. I will wipe you the fuck\n" +
-  "out with precision the likes of which has never been seen before on this Earth, mark my fucking words.\n" +
-  "You think you can get away with saying that shit to me over the Internet? Think again, fucker. As we\n" +
-  "speak I am contacting my secret network of spies across the USA and your IP is being traced right now\n" +
-  "so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call\n" +
-  "your life. You're fucking dead, kid. I can be anywhere, anytime, and I can kill you in over seven\n" +
-  "hundred ways, and that's just with my bare hands. Not only am I extensively trained in unarmed combat,\n" +
-  "but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full\n" +
-  "extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have\n" +
-  'known what unholy retribution your little "clever" comment was about to bring down upon you, maybe you\n' +
-  "would have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price,\n" +
-  "you goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.";
+    "What the fuck did you just fucking say about me, you little bitch? I'll have you know I\n" +
+    "graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on\n" +
+    "Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper\n" +
+    "in the entire US armed forces. You are nothing to me but just another target. I will wipe you the fuck\n" +
+    "out with precision the likes of which has never been seen before on this Earth, mark my fucking words.\n" +
+    "You think you can get away with saying that shit to me over the Internet? Think again, fucker. As we\n" +
+    "speak I am contacting my secret network of spies across the USA and your IP is being traced right now\n" +
+    "so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call\n" +
+    "your life. You're fucking dead, kid. I can be anywhere, anytime, and I can kill you in over seven\n" +
+    "hundred ways, and that's just with my bare hands. Not only am I extensively trained in unarmed combat,\n" +
+    "but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full\n" +
+    "extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have\n" +
+    'known what unholy retribution your little "clever" comment was about to bring down upon you, maybe you\n' +
+    "would have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price,\n" +
+    "you goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.";
 
 console.log(`Original text:\n${text}\n`);
 
 analysis = analyzeText(text, true).then(
-  ([
-    sentiment_result,
-    entity_result,
-    syntax_result,
-    entity_sentiment_result,
-    classify_result,
-  ]) => {
-    console.log(`Overall sentiment:
+    ([
+       sentiment_result,
+       entity_result,
+       syntax_result,
+       classify_result,
+     ]) => {
+      console.log(`Overall sentiment:
     \tMagnitude: ${sentiment_result[0].magnitude}
     \tScore: ${sentiment_result[0].score}`);
-    console.log();
-    console.log("Line by line:");
-    for (const sentence in sentiment_result) {
-      if (sentence > 0) {
-        console.log(
-          `\tText: ${sentiment_result[sentence].text.replace("\n", " ")}`
-        );
-        console.log(`\tMagnitude: ${sentiment_result[sentence].magnitude}`);
-        console.log(`\tScore: ${sentiment_result[sentence].score}`);
+      console.log();
+      console.log("Line by line:");
+      for (const sentence in sentiment_result) {
+        if (sentence > 0) {
+          console.log(
+              `\tText: ${sentiment_result[sentence].text.replace("\n", " ")}`
+          );
+          console.log(`\tMagnitude: ${sentiment_result[sentence].magnitude}`);
+          console.log(`\tScore: ${sentiment_result[sentence].score}`);
+          console.log();
+        }
+      }
+
+      console.log("Entities:");
+      for (const entity of entity_result) {
+        console.log(`\tName: ${entity.name.replace("\n", " ")} (${entity.type})`);
+        console.log(`\tSalience: ${entity.salience}`);
         console.log();
       }
-    }
 
-    console.log("Entities:");
-    for (const entity of entity_result) {
-      console.log(`\tName: ${entity.name.replace("\n", " ")} (${entity.type})`);
-      console.log(`\tSalience: ${entity.salience}`);
+      console.log("Syntax:");
+      for (const part of syntax_result) {
+        console.log(`\tWord: ${part.word} (${part.partOfSpeech})`);
+      }
+      console.log();
+
+      console.log('Categories:');
+      for (const category of classify_result) {
+        console.log(`\tName: ${category.name} (confidence: ${category.confidence})`);
+      }
       console.log();
     }
-
-    console.log("Syntax:");
-    for (const part of syntax_result) {
-      console.log(`\tWord: ${part.word} (${part.partOfSpeech})`);
-    }
-    console.log();
-
-    // console.log('Categories:');
-    // for (const category of classify_result) {
-    //     console.log(`\tName: ${category.name} (confidence: ${category.confidence})`);
-    // }
-    // console.log();
-  }
 );
+
+
