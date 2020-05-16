@@ -1,8 +1,8 @@
 import React from 'react';
 
 const Footer = () => (
-    <div className="footer">
-        <h1>Footer</h1>
+    <div className="footer" align= "center">
+        <h2>&copy; Shaqdaddy</h2>
     </div>
 );
 
