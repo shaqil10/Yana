@@ -1,7 +1,10 @@
-const express = require("express");
-const login = require("facebook-chat-api");
+const express = require('express');
+const login = require('facebook-chat-api');
+const cors = require('cors');
 const app = express();
 const PORT = 4000;
+
+app.use(cors());
 
 app.get("/", (req, res) => {
     sendMessage();
