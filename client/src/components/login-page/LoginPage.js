@@ -1,8 +1,10 @@
 import React from "react";
+import { Button } from '@material-ui/core'
+import "./LoginPage.css"
 
 const LoginPage = () => (
     <div className="login-page">
-        <div align = "center">
+        <div className = "prompt" id = "login-prompt" align = "center">
             <h2>Login with Facebook:</h2>
         </div>
 
@@ -20,7 +22,7 @@ const LoginPage = () => (
                     className = "lg-input"
                     placeholder = "Password" />
                 <br />
-                <button type="login">Log in</button>
+                <Button id="login-button" type="button">Log in</Button>
             </form>
         </div>
     </div>

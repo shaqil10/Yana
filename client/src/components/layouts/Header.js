@@ -2,9 +2,6 @@ import React from 'react';
 import logo from './notalone.png'
 import titlepic from './titlepic.PNG'
 
-console.log(logo);
-console.log(titlepic);
-
 const Header = () => (
     <div className="header" align = "center">
         <div className = "title" align = "center">
