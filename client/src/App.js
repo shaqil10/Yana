@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+
+function InputField(props) {
+    const handleChange = (val) => {
+        props.onChange(val.target.value);
+    }
+    return (
+        <div>
+            <input onChange={handleChange} />
+        </div>
+    )
+}
+
+function ChatWindow(props) {
+    const [values, setValues] = useState({});
+    const handleFieldChange = (value) => {
+        setValues({ ...values, input: value });
+        console.log(values.input);
+    };
+    const field = <InputField onChange={handleFieldChange} />
+    return (
+        <div>
+            {field}
+        </div>
+    );
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ChatWindow />
     </div>
   );
 }
