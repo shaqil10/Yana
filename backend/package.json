@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "format": "prettier \"./index.js\" --write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,7 +14,5 @@
     "express": "^4.17.1",
     "facebook-chat-api": "^1.8.0"
   },
-  "devDependencies": {
-    "prettier": "^2.0.5"
-  }
+  "devDependencies": {}
 }

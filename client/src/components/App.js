@@ -1,9 +1,9 @@
-import React from 'react';
-import LoginPage from './login-page/LoginPage';
-import ChatWindow from './chat-window/ChatWindow';
-import Footer from './layouts/Footer';
-import Header from './layouts/Header';
-import axios from 'axios';
+import React from "react";
+import LoginPage from "./login-page/LoginPage";
+import ChatWindow from "./chat-window/ChatWindow";
+import Footer from "./layouts/Footer";
+import Header from "./layouts/Header";
+import axios from "axios";
 
 function App() {
   async function sendFbMessage() {
