@@ -1,12 +1,17 @@
 import React from "react";
+import { Button } from '@material-ui/core'
 
 function InputField(props) {
-  const handleChange = (val) => {
-    props.onChange(val.target.value);
+
+  let textInput = React.createRef();
+
+  const handleClick = () => {
+    props.onClick(textInput.current.value);
   };
   return (
     <div>
-      <input onChange={handleChange} />
+      <input ref={textInput} />
+      <Button onClick={handleClick} variant="contained" color="primary"> Submit </Button>
     </div>
   );
 }

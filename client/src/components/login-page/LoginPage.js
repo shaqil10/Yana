@@ -11,13 +11,13 @@ const LoginPage = () => (
                 <input
                     type ="text"
                     name="e-mail"
-                    class = "lg-input"
+                    className = "lg-input"
                     placeholder = "E-mail address" />
                 <br />
                 <input
                     type ="text"
                     name="password"
-                    class = "lg-input"
+                    className = "lg-input"
                     placeholder = "Password" />
                 <br />
                 <button type="login">Log in</button>
