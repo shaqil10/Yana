@@ -1,13 +1,62 @@
 /*
- * documentation: todo lol oops
+ * analyzeText: wrapper function to analyze input text using
+ *              Google cloud's natrual language processing API.
  *
+ * Run this file for a demo.
+ *
+ * Usage:
+ * [
+ *    sentiment_result,
+ *    entities_result,
+ *    syntax_result,
+ *    classify_result
+ * ] = analyzeText(
+ *    text,                   - text to analyze (string)
+ *    analyze_sentiment,      - whether to perform sentiment analysis (boolean, default=true)
+ *    analyze_entities,       - whether to perform entity analysis (boolean, default=true)
+ *    analyze_syntax,         - whether to perform syntax analysis (boolean, default=true)
+ *    classify_content,       - whether to perform content classification (boolean, default=true)
+ * )
+ *
+ * Returns:                   note - if analyze_sentiment is false, sentiment_result is null, etc
+ * 1. sentiment_result
+ *      - an analysis of the prevailing emotional opinion within the text
+ *      - extent to which it is positive, negative, or neutral
+ *      - an array of objects:
+ *        - sentiment_result[0].magnitude = amount of emotional content present
+ *                                          (0 = none, >10 = huge amount)
+ *        - sentiment_restult[0].score = whether the text is mostly positive, negative, or neutral
+ *                                          (-1 = most negative, +1 = most positive)
+ *        - sentiment_result[1...] = analysis result for each individual sentence in the text. For example:
+ *            - sentiment_result[5].text = text of the 5th sentence
+ *            - sentiment_result[5].magnitude = magnitude of the 5th sentence
+ *            - sentiment_result[5].score = score of the 5th sentence
+ * 2. entities_result
+ *      - an analysis of each entity/thing referred to in the text,
+ *        and a salience score (relevance to overall text)
+ *      - an array of objects:
+ *        - entities_result[6].name = name of 7th most relevant entity in the text.
+ *        - entities_result[6].type = PERSON/EVENT/NUMBER/etc...
+ *        - entities_result[6].salience = salience score
+ *                                          (0 = irrelevant to text, 1 = 100% relevant)
+ * 3. syntax_result
+ *      - a syntactic analysis of the document (nouns/verbs/adjectives, punctuation, etc)
+ *      - an array of objects
+ *        - syntax_result[0].word = 1st word
+ *        - syntax_result[0].partOfSpeech = what part of speech it is
+ * 4. classify_result
+ *      - still not sure entirely how it works.
+ *      - doesn't seem to find anything (returns empty array) for most inputs
+ *      - likely only works well if the input text is very long
+ *
+ * More info: https://cloud.google.com/natural-language/docs/how-to
  */
 async function analyzeText(
   text,
   analyze_sentiment = true,
   analyze_entities = true,
   analyze_syntax = true,
-  classify_content = true
+  classify_content = false,
 ) {
   const language = require("@google-cloud/language"); // Imports the Google cloud client library
   const client = new language.LanguageServiceClient(); // Create client
@@ -87,12 +136,17 @@ text =
 
 console.log(`Original text:\n${text}\n`);
 
-analysis = analyzeText(text, true).then(
+analysis = analyzeText(
+    text,
+    true,
+    true,
+    true,
+    true,
+).then(
   ([
     sentiment_result,
     entity_result,
     syntax_result,
-    entity_sentiment_result,
     classify_result,
   ]) => {
     console.log(`Overall sentiment:
@@ -121,15 +175,14 @@ analysis = analyzeText(text, true).then(
 
     console.log("Syntax:");
     for (const part of syntax_result) {
-      console.log(`Word: ${part.word}`);
-      console.log(`Part of speech: ${part.partOfSpeech}`);
+      console.log(`Word: ${part.word} (${part.partOfSpeech})`);
     }
     console.log();
 
-    // console.log('Categories:');
-    // for (const category of classify_result) {
-    //     console.log(`\tName: ${category.name} (confidence: ${category.confidence})`);
-    // }
-    // console.log();
+    console.log('Categories:');
+    for (const category of classify_result) {
+        console.log(`\tName: ${category.name} (confidence: ${category.confidence})`);
+    }
+    console.log();
   }
 );
