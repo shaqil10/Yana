@@ -7,7 +7,7 @@ function ChatWindow(props) {
     setValues({ ...values, input: value });
     console.log(values.input);
   };
-  const field = <InputField onChange={handleFieldChange} />;
+  const field = <InputField onClick={handleFieldChange} />;
   return <div>{field}</div>;
 }
 
