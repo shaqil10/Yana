@@ -6,36 +6,25 @@ const PORT = 4000;
 
 app.use(cors());
 
-app.get("/", (req, res) => {
-  sendMessage();
-  res.send("hello");
+app.get("/", (_req, res) => {
+  sendMessage(["Eric Kim", "Shaqil Rahemtulla"], res.send("hello"));
 });
 
 app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
 
-const sendMessage = () => {
+const sendMessage = (friends) => {
   login({ email: "rhacks2020@gmail.com", password: "pw121234" }, (err, api) => {
     if (err) return console.error(err);
-    let msg = "this is so cool";
-    // sendMessages();
-    api.getFriendsList((err, friends) => {
-      friends.forEach((friend) => {
-        console.log(friend.fullName);
+    let msg = "Help! I may have overdosed!";
+    api.getFriendsList((err, allFriends) => {
+      friends.forEach(friend => {
+        allFriends.forEach(eachFriend => {
+          if (friend === eachFriend.fullName)
+            api.sendMessage(msg, eachFriend.userID);
+        });
       });
     });
   });
-};
-
-const sendMessages = (msg) => {
-  let leoID = "1817870651";
-  let aidanID = "793724637";
-  let shaqilID = "570920248";
-  let myID = "100051348402858";
-  let ids = [leoID, aidanID, shaqilID, myID];
-
-  for (id of ids) {
-    api.sendMessage(msg, id);
-  }
-};
+}
