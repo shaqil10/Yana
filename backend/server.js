@@ -1,3 +1,4 @@
+const analyzeText = require("../client/src/nlp/nlp");
 const express = require("express");
 const login = require("facebook-chat-api");
 const cors = require("cors");
@@ -8,6 +9,14 @@ app.use(cors());
 
 app.get("/", (_req, res) => {
   sendMessage(["Eric Kim", "Shaqil Rahemtulla"], res.send("hello"));
+});
+
+app.post("/", (req, res) => {
+  analyzeText(req.data)
+      .then((result) => {
+        console.log(result);
+        return result;
+      })
 });
 
 app.listen(PORT, () => {
