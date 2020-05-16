@@ -65,7 +65,7 @@ async function analyzeText(
   // Detect the sentiment of the document, if requested
   let sentiment_result = null;
   if (analyze_sentiment) {
-    [sentiment_result_raw] = await client.analyzeSentiment({ document });
+    let [sentiment_result_raw] = await client.analyzeSentiment({ document });
     sentiment_result = [
       {
         magnitude: sentiment_result_raw.documentSentiment.magnitude,
@@ -84,14 +84,14 @@ async function analyzeText(
   // Detect the entities of the document, if requested
   let entity_result = null;
   if (analyze_entities) {
-    [entity_result_raw] = await client.analyzeEntities({ document });
+    let [entity_result_raw] = await client.analyzeEntities({ document });
     entity_result = entity_result_raw.entities;
   }
 
   // Detect the syntax of the document, if requested
   let syntax_result = null;
   if (analyze_syntax) {
-    [syntax_result_raw] = await client.analyzeSyntax({ document });
+    let [syntax_result_raw] = await client.analyzeSyntax({ document });
     syntax_result = [];
     for (const token of syntax_result_raw.tokens) {
       syntax_result.push({
@@ -104,7 +104,7 @@ async function analyzeText(
   // Classify the content of the document, if requested
   let classify_result = null;
   if (classify_content) {
-    [classify_result_raw] = await client.classifyText({ document });
+    let [classify_result_raw] = await client.classifyText({ document });
     classify_result = [];
     for (const category of classify_result_raw.categories) {
       classify_result.push({
@@ -117,7 +117,7 @@ async function analyzeText(
   return [sentiment_result, entity_result, syntax_result, classify_result];
 }
 
-text =
+let text =
   "What the fuck did you just fucking say about me, you little bitch? I'll have you know I\n" +
   "graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on\n" +
   "Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper\n" +
@@ -136,7 +136,7 @@ text =
 
 console.log(`Original text:\n${text}\n`);
 
-analysis = analyzeText(text, true).then(
+let analysis = analyzeText(text, true).then(
   ([
     sentiment_result,
     entity_result,
@@ -180,3 +180,5 @@ analysis = analyzeText(text, true).then(
     // console.log();
   }
 );
+
+module.exports = analyzeText;
