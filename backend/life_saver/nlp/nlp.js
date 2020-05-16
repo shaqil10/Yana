@@ -59,7 +59,8 @@ async function analyzeText(
     classify_content = true
 ) {
   const language = require("@google-cloud/language"); // Imports the Google cloud client library
-  const client = new language.LanguageServiceClient(); // Create client
+  const key = {keyFilename: '../../../gcloud-language-key/RU-Hacks-2020-key.json'}; // Filename of authentication key
+  const client = new language.LanguageServiceClient(key); // Create client
   const document = { content: text, type: "PLAIN_TEXT" }; // Create document representing provided text
 
   // Detect the sentiment of the document, if requested
@@ -123,27 +124,33 @@ async function analyzeTextWrapper(
     analyze_syntax = true,
     classify_content = true
 ) {
+    let sentiment_result;
+    let entity_result;
+    let syntax_result;
+    let classify_result;
   try {
-    [
-      sentiment_result, entity_result, syntax_result, classify_result
-    ] = await analyzeText(
+    const result = await analyzeText(
         text, analyze_sentiment, analyze_entities, analyze_syntax, classify_content
     );
+      sentiment_result = result[0];
+      entity_result = result[1];
+      syntax_result = result[2];
+      classify_result = result[3];
   } catch(err) {
-    let sentiment_result_dummy = [{magnitude: 0, score: 0}];
-    let entity_result_dummy = [{name: 'dummy_name', type: 'OTHER', salience: 0}];
-    let syntax_result_dummy = [{word: 'dummy_word', partOfSpeech: 'NOUN'}];
-    let classify_result_dummy = [{name: 'dummy_category', confidence: 0}];
-    return [
-      analyze_sentiment ? sentiment_result_dummy : null,
-      analyze_entities ? entity_result_dummy : null,
-      analyze_syntax ? syntax_result_dummy : null,
-      classify_content ? classify_result_dummy : null,
-    ];
+    const sentiment_result_dummy = [{magnitude: 0, score: 0}, {text: 'dummy_text', magnitude: 0, score: 0}];
+    const entity_result_dummy = [{name: 'dummy_name', type: 'OTHER', salience: 0}];
+    const syntax_result_dummy = [{word: 'dummy_word', partOfSpeech: 'NOUN'}];
+    const classify_result_dummy = [{name: 'dummy_category', confidence: 0}];
+
+    sentiment_result = analyze_sentiment ? sentiment_result_dummy : null;
+    entity_result = analyze_entities ? entity_result_dummy : null;
+    syntax_result = analyze_syntax ? syntax_result_dummy : null;
+    classify_result = classify_content ? classify_result_dummy : null;
   }
+  return [sentiment_result, entity_result, syntax_result, classify_result];
 }
 
-text =
+const text =
     "What the fuck did you just fucking say about me, you little bitch? I'll have you know I\n" +
     "graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on\n" +
     "Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper\n" +
@@ -162,7 +169,7 @@ text =
 
 console.log(`Original text:\n${text}\n`);
 
-analysis = analyzeText(text, true).then(
+analysis = analyzeTextWrapper(text).then(
     ([
        sentiment_result,
        entity_result,
