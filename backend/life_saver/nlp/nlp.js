@@ -137,7 +137,7 @@ text =
 console.log(`Original text:\n${text}\n`);
 
 analysis = analyzeText(
-    text,
+    text.replace(/\n/g, ' '),
     true,
     true,
     true,
@@ -157,7 +157,7 @@ analysis = analyzeText(
     for (const sentence in sentiment_result) {
       if (sentence > 0) {
         console.log(
-          `\tText: ${sentiment_result[sentence].text.replace("\n", " ")}`
+          `\tText: ${sentiment_result[sentence].text}`
         );
         console.log(`\tMagnitude: ${sentiment_result[sentence].magnitude}`);
         console.log(`\tScore: ${sentiment_result[sentence].score}`);
@@ -167,11 +167,9 @@ analysis = analyzeText(
 
     console.log("Entities:");
     for (const entity of entity_result) {
-      console.log(`\tName: ${entity.name.replace("\n", " ")}`);
-      console.log(`\tType: ${entity.type}`);
-      console.log(`\tSalience: ${entity.salience}`);
-      console.log();
+      console.log(`\tName: ${entity.name}, type: ${entity.type}, salience: ${entity.salience}`);
     }
+    console.log();
 
     console.log("Syntax:");
     for (const part of syntax_result) {
