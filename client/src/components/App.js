@@ -4,6 +4,7 @@ import ChatWindow from "./chat-window/ChatWindow";
 import Footer from "./layouts/Footer";
 import Header from "./layouts/Header";
 import axios from "axios";
+import { Router } from '@reach/router';
 import nlp from '../nlp/nlp';
 
 function App() {
@@ -15,10 +16,12 @@ function App() {
   sendFbMessage();
 
   return (
-    <div className="App">
+    <div className="App" align="center" style={{ margin: "auto", maxWidth: 750 }}>
       <Header />
-      <ChatWindow />
-      <LoginPage />
+      <Router>
+        <LoginPage path="/" />
+        <ChatWindow path="/chat-window" />
+      </Router>
       <Footer />
     </div>
   );
