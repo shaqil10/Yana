@@ -38,7 +38,7 @@ const LoginPage = () => {
                             id="login-button"
                             type="submit"
                         >
-                            // Log in
+                            Log in
                         </Button>
                     </Link>
                 </form>
