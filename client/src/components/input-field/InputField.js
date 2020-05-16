@@ -1,16 +1,21 @@
-import React from "react";
-import { Button } from '@material-ui/core'
+import React, { useState } from "react";
+import { Button, TextField } from '@material-ui/core'
 
 function InputField(props) {
 
-  let textInput = React.createRef();
+  const [values, setValues] = useState({});
 
   const handleClick = () => {
-    props.onClick(textInput.current.value);
+      props.onClick(values.input);
   };
+
+    const handleChange = (val) => {
+        setValues({ ...values, input: val.target.value });
+    };
+
   return (
     <div>
-      <input ref={textInput} />
+      <TextField variant="outlined" label="What's on your mind?" onChange={handleChange}/>
       <Button onClick={handleClick} variant="contained" color="primary"> Submit </Button>
     </div>
   );
