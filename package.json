@@ -5,8 +5,5 @@
   },
   "devDependencies": {
     "prettier": "^2.0.5"
-  },
-  "dependencies": {
-    "@google-cloud/language": "^4.0.0"
   }
 }
