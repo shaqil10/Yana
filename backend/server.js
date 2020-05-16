@@ -14,19 +14,16 @@ app.get("/", (_req, res) => {
 });
 
 app.post("/", (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
-  let friends = req.body.friends;
-  console.log(`Email: ${email}, Password: ${password}, Friends: ${friends}`);
-  res.end("post request received");
+  sendMessage(req.body);
 });
 
 app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
 
-const sendMessage = (friends) => {
-  login({ email: "rhacks2020@gmail.com", password: "pw121234" }, (err, api) => {
+const sendMessage = ({ email, password, friends }) => {
+  // console.log(`Email: ${email}, PW: ${password}, Friends: ${friends}`)
+  login({ email: email, password: password }, (err, api) => {
     if (err) return console.error(err);
     let msg = "Help! I may have overdosed!";
     api.getFriendsList((err, allFriends) => {
