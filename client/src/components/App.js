@@ -8,7 +8,7 @@ import axios from "axios";
 function App() {
   async function sendFbMessage() {
     const res = await axios.get("http://localhost:4000/");
-    console.log(res);
+    console.log(res.statusText);
   }
 
   sendFbMessage();
