@@ -13,6 +13,8 @@ const LoginPage = () => {
 
     // })
 
+    
+
     return (
         <div className="login-page">
             <div className="prompt" id="login-prompt" align="center">
@@ -33,14 +35,12 @@ const LoginPage = () => {
                         className="lg-input"
                         placeholder="Password" />
                     <br />
-                    <Link to="/chat-window">
                         <Button
                             id="login-button"
                             type="submit"
                         >
                             Log in
                         </Button>
-                    </Link>
                 </form>
             </div>
         </div>
