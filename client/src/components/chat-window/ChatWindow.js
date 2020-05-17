@@ -19,6 +19,7 @@ function ChatWindow({ email, password, friends }) {
         });
         setChat([...chat, [res.data][0]]);
         setMessageCounter(messageCounter + 1);
+        console.log(attempts);
         setAttempts(attempts + 1);
         if (res.data === "I am notifying your friends of the situation.") {
           sendFbMessage();

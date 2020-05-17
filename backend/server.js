@@ -50,7 +50,7 @@ const sendMessage = ({ email, password, friends }) => {
   console.log(`Email: ${email}, PW: ${password}, Friends: ${friends}`)
   login({ email: email, password: password }, (err, api) => {
     if (err) return console.error(err);
-    let msgs = ['ALERT!!! Ryerson Hacks has indicated they have been using drugs and need help! Please get to them quickly and take them to emergency in the case of an overdose. If you have access to naloxone, please help them administer it. It could help save their lives.', "Here is some information on naloxone if you need it: Naloxone temporarily reverses opioid overdose signs and symptoms and improves respiration for 30-60 minutes. Naloxone comes in the form of a nasal spray or an injection and can be purchased at most pharmacies"];
+    let msgs = ['ALERT!!! Ryerson Hacks has indicated they have been using drugs and need help! Please get to them quickly and take them to emergency in the case of an overdose. If you have access to naloxone, please help them administer it. It could help save their life.', "Here is some information on naloxone if you need it: Naloxone temporarily reverses opioid overdose signs and symptoms and improves respiration for 30-60 minutes. Naloxone comes in the form of a nasal spray or an injection and can be purchased at most pharmacies."];
     api.getFriendsList((err, allFriends) => {
       friends.forEach(friend => {
         allFriends.forEach(eachFriend => {
@@ -66,9 +66,13 @@ const sendMessage = ({ email, password, friends }) => {
 
 function inputDispatch(userInput, numAttempts) {
   switch (userInput.toLowerCase()) {
-    case (" " || "hi im about to start"):
+    case (" "):
       return useHelper(numAttempts);
       break;
+
+     case ("use"):
+        return useHelper(numAttempts);
+        break;
 
     case "help":
       return helpHelper();
@@ -94,7 +98,7 @@ function useHelper(numAttempts) {
 
     case 2:
       return ("Hey, are you okay? I will be notifying your friends momentarily"
-        + "if you do not respond.");
+        + " if you do not respond.");
       break;
 
     case 3:
@@ -102,7 +106,7 @@ function useHelper(numAttempts) {
       break;
 
     default:
-      return;
+        return false;
   }
 }
 
@@ -163,7 +167,7 @@ function genericResponse(score) {
   const negative_phrases = [
     'I\'m sorry to hear that.',
     'I understand.',
-    'What\'s would you like to chat about?',
+    'What would you like to chat about?',
     'I am here to listen.'
   ];
   if (score < 0) {
