@@ -8,4 +8,4 @@ If a user indicates that they are about to use, YANA will offer a reminder to ha
 Users can also have conversations with YANA as it implements the Google Sentiment Analyzer API and responds to the user based on the “sentiment score” of the statement the user inputs or specific trigger keywords.
 
 
-Collaborators: Eric Kim, Aidan Matthewson, Leo Sporn, Shaqil Rahemtulla
+Collaborators: Eric Kim, Aidan Mathewson, Leo Sporn, Shaqil Rahemtulla
