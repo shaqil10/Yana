@@ -6,7 +6,7 @@ import axios from "axios";
 import logo from "./logo.png";
 
 function ChatWindow({ email, password, friends }) {
-  const [chat, setChat] = useState(["Hey, my name is YANA. I am here to support you and make sure that you are safe. How can I help you today?\n" +
+  const [chat, setChat] = useState(["Hi, my name is YANA. I am here to support you and make sure that you are safe. How can I help you today?\n" +
   "Options: USE, HELP, or type something else to chat\n"]);
   const [messageCounter, setMessageCounter] = useState(0);
   const [attempts, setAttempts] = useState(0);

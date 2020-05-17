@@ -49,7 +49,7 @@ function generateResponse(sentimentData, input) {
 const sendMessage = ({ email, password, friends }) => {
   login({ email: email, password: password }, (err, api) => {
     if (err) return console.error(err);
-    let msgs = ['ALERT!!! Ryerson Hacks has indicated they have been using drugs and need help! Please get to them quickly and take them to emergency in the case of an overdose. If you have access to naloxone, please help them administer it. It could help save their life.', "Here is some information on naloxone if you need it: Naloxone temporarily reverses opioid overdose signs and symptoms and improves respiration for 30-60 minutes. Naloxone comes in the form of a nasal spray or an injection and can be purchased at most pharmacies."];
+    let msgs = ['ALERT!!! Ryerson Hacks has indicated they have been using drugs and need help! Please get to them quickly and take them to emergency in the case of an overdose. If you have access to naloxone, please help them administer it. It could help save their life.', "Here is some information on naloxone if you need it: naloxone temporarily reverses opioid overdose signs and symptoms and improves respiration for 30-60 minutes. Naloxone comes in the form of a nasal spray or an injection and can be purchased at most pharmacies."];
     api.getFriendsList((err, allFriends) => {
       friends.forEach(friend => {
         allFriends.forEach(eachFriend => {
@@ -140,9 +140,9 @@ function hardcodedResponse(text) {
   for (let phrase of phrases_level_2) {
     if (text.includes(phrase)) {
       const responses_level_2 = [
-        // 'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
-        // 'I\'m sorry to hear that.',
-        // 'If you\'re thinking of using - make sure to be safe.',
+        'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
+        'I\'m sorry to hear that.',
+        'If you\'re thinking of using - make sure to be safe.',
         'Remember - the safest situation to use is with another person present.'
       ];
       return responses_level_2[Math.floor(Math.random() * responses_level_2.length)];
@@ -157,9 +157,9 @@ function hardcodedResponse(text) {
 * */
 function genericResponse(score) {
   const positive_phrases = [
-    'I\'m glad to hear that.'
-    // 'What\'s on your mind?',
-    // 'What do you want to talk about?'
+    'I\'m glad to hear that.',
+    'What\'s on your mind?',
+    'What do you want to talk about?'
   ];
   const negative_phrases = [
     'I\'m sorry to hear that.',
