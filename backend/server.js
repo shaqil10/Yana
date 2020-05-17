@@ -57,6 +57,52 @@ const sendMessage = ({ email, password, friends }) => {
   });
 }
 
+function inputDispatch(userInput, numAttempts) {
+    switch (userInput.toLowerCase()) {
+        case "use":
+        return useHelper(numAttempts);
+        break;
+
+        case "help":
+        return helpHelper();
+        break;
+
+        default:
+        return generateResponse(userInput);
+        break;
+    }
+}
+
+
+function useHelper(numAttempts) {
+    switch (numAttempts) {
+        case 0:
+        return ("Thank you for letting me know. Please remember to have naloxone"
+        + "nearby in case something goes wrong. If you need anything, I'm here.");
+        break;
+
+        case 1:
+        return "Hey, are you okay?";
+        break;
+
+        case 2:
+        return ("Hey, are you okay? I will be notifying your friends momentarily"
+        + "if you do not respond.");
+        break;
+
+        case 3:
+        return helpHelper();
+        break;
+
+        default:
+        return;
+    }
+}
+
+function helpHelper() {
+    return "I am notifying your friends of the situation.";
+}
+
 function hardcodedResponse(text, level) {
 
   const generic_responses = [
