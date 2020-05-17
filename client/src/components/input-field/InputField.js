@@ -13,9 +13,11 @@ function InputField({ handleChange }) {
   }
 
   return (
-    <div>
-      <TextField variant="outlined" label="What's on your mind?" onChange={handleFieldChange} />
-      <Button onClick={handleClick} variant="contained" color="primary"> Submit </Button>
+    <div style={{ border: "5px rgb(207, 189, 253) solid", borderRadius: "10px", padding: 15 }}>
+      <TextField fullWidth variant="outlined" label="You are not alone. What's on your mind?" onChange={handleFieldChange} />
+      <div style={{ marginTop: 10 }}>
+        <Button onClick={handleClick} size="large" variant="contained" color="primary"> Submit </Button>
+      </div>
     </div>
   );
 }

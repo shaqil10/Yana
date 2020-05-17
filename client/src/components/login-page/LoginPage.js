@@ -27,6 +27,7 @@ const LoginPage = ({ handleEmail, handlePassword, handleFirst, handleSecond, han
             </div>
             <div styles={{ width: "100" }}>
                 <TextField
+                    type="password"
                     name="password"
                     id="standard-basic"
                     label="Password"
@@ -57,15 +58,20 @@ const LoginPage = ({ handleEmail, handlePassword, handleFirst, handleSecond, han
                     onChange={handleThird}
                 />
             </div>
-            <Link to="/chat-window">
-                <Button
-                    id="login-button"
-                    type="submit"
-                    onClick={handleClick}
-                >
-                    Log in
+            <div style={{ marginTop: 20 }}>
+                <Link to="/chat-window">
+                    <Button
+                        color="primary"
+                        size="small"
+                        variant="contained"
+                        id="login-button"
+                        type="submit"
+                        onClick={handleClick}
+                    >
+                        Begin
                 </Button>
-            </Link>
+                </Link>
+            </div>
         </div >
     );
 }

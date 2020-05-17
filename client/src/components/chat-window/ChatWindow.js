@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Grid from '@material-ui/core/Grid';
 import InputField from "../input-field/InputField";
 import axios from "axios";
+import logo from "./logo.png";
 
 function ChatWindow({ email, password, friends }) {
   const [chat, setChat] = useState([]);
@@ -66,15 +68,20 @@ function ChatWindow({ email, password, friends }) {
             :
             <div className="bot" align="left" style={{ marginLeft: 30, marginTop: 10, marginBottom: 10 }}>
               <div style={{ border: "3px solid #CFCFCF", borderRadius: "25px", marginRight: "50%" }}>
-                <p style={{ paddingLeft: 25 }}>{each}</p>
+                <Grid container>
+                  <Grid item xs={1}>
+                    <img src={logo} style={{ borderRadius: 5, border: "2px #CFCFCF solid", marginTop: 6, marginLeft: "15%", width: 30, height: 30 }} />
+                  </Grid>
+                  <p style={{ paddingLeft: 25 }}>{each}</p>
+                </Grid>
               </div>
             </div>
         ))
         }
+        <InputField
+          handleChange={handleChange}
+        />
       </div >
-      <InputField
-        handleChange={handleChange}
-      />
     </div >
   );
 }
