@@ -1,6 +1,7 @@
 import React from "react";
 import LoginPage from "./login-page/LoginPage";
 import ChatWindow from "./chat-window/ChatWindow";
+import AddFriends from "./add-friends/AddFriends";
 import Footer from "./layouts/Footer";
 import Header from "./layouts/Header";
 import axios from "axios";
@@ -21,6 +22,7 @@ function App() {
       <Router>
         <LoginPage path="/" />
         <ChatWindow path="/chat-window" />
+        <AddFriends path="/add-friends" />
       </Router>
       <Footer />
     </div>
