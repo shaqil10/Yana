@@ -10,9 +10,14 @@ import useLoginStyles from './LoginPage.css.js';
 const LoginPage = () => {
     const login = useLoginStyles();
 
+    function myFunction() {
+        window.location.replace("https://www.google.com");
+    }
+
     return (
         <div className="login-page">
             <form
+                // onSubmit={() => window.location.href = 'https://localhost:3000/chat-window'}
                 method="POST"
                 action="http://localhost:4000"
                 style={{ margin: "auto", minWidth: 500, maxWidth: 700, margin: "auto", display: "grid" }}
@@ -48,39 +53,12 @@ const LoginPage = () => {
                 <Button
                     id="login-button"
                     type="submit"
+                    href="http://localhost:3000/chat-window"
                 >
                     Log in
                 </Button>
             </form >
         </div >
-        // <div className="prompt" id="login-prompt" align="center">
-        //     <h2>Login with Facebook:</h2>
-        // </div>
-
-        // <div className="Email" align="center">
-        //     <form method="POST" action="http://localhost:4000">
-        //         <input
-        //             type="text"
-        //             name="email"
-        //             className="lg-input"
-        //             placeholder="E-mail address" />
-        //         <br />
-        //         <input
-        //             type="text"
-        //             name="password"
-        //             className="lg-input"
-        //             placeholder="Password" />
-        //         <br />
-        //         <Link to="/chat-window">
-        //             <Button
-        //                 id="login-button"
-        //                 type="submit"
-        //             >
-        //                 Log in
-        //                 </Button>
-        //         </Link>
-        //     </form>
-        // </div>
     );
 }
 
