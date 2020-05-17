@@ -69,7 +69,7 @@ function ChatWindow({ email, password, friends }) {
               <div style={{ border: "3px solid #CFCFCF", borderRadius: "25px", marginRight: "50%" }}>
                 <Grid container>
                   <Grid item xs={1}>
-                    <img src={logo} style={{ borderRadius: 5, border: "2px #CFCFCF solid", marginTop: 6, marginLeft: 10, width: 30, height: 30 }} />
+                    <img src={logo} style={{ borderRadius: 5, border: "2px #CFCFCF solid", marginTop: 6, marginLeft: "15%", width: 30, height: 30 }} />
                   </Grid>
                   <p style={{ paddingLeft: 25 }}>{each}</p>
                 </Grid>
