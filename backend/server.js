@@ -140,9 +140,9 @@ function hardcodedResponse(text) {
   for (let phrase of phrases_level_2) {
     if (text.includes(phrase)) {
       const responses_level_2 = [
-        'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
-        'I\'m sorry to hear that.',
-        'If you\'re thinking of using - make sure to be safe.',
+        // 'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
+        // 'I\'m sorry to hear that.',
+        // 'If you\'re thinking of using - make sure to be safe.',
         'Remember - the safest situation to use is with another person present.'
       ];
       return responses_level_2[Math.floor(Math.random() * responses_level_2.length)];
@@ -157,9 +157,9 @@ function hardcodedResponse(text) {
 * */
 function genericResponse(score) {
   const positive_phrases = [
-    'I\'m glad to hear that.',
-    'What\'s on your mind?',
-    'What do you want to talk about?'
+    'I\'m glad to hear that.'
+    // 'What\'s on your mind?',
+    // 'What do you want to talk about?'
   ];
   const negative_phrases = [
     'I\'m sorry to hear that.',
