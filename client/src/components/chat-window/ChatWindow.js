@@ -9,8 +9,9 @@ function ChatWindow(props) {
         console.log(value);
         axios.post("http://localhost:4000/query", {text: value})
             .then((result) => {
-                console.log(result);
+                setValues({ ...values, sentiment: result.data[0][0] });
             });
+        console.log(values.sentiment);
   };
   const field = <InputField onClick={handleFieldChange} />;
   return <div>{field}</div>;

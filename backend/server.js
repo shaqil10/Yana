@@ -23,7 +23,7 @@ app.post("/query", (req, res) => {
   analyzeText(req.body.text)
       .then((result) => {
         console.log(result);
-        return result;
+        res.send(result);
       })
 });
 
