@@ -35,6 +35,7 @@ app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
 
+
 function generateResponse(sentimentData, input) {
   let specifiedResponse = hardcodedResponse(input);
   if (specifiedResponse) {
@@ -119,10 +120,8 @@ function helpHelper() {
 * */
 
 function hardcodedResponse(text) {
-
   const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drug', 'naloxone'];
   const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
-
   text = text.toLowerCase();
 
   for (let phrase of phrases_level_3) {
