@@ -22,14 +22,24 @@ app.post("/query", (req, res) => {
   console.log(req.body);
   analyzeText(req.body.text)
       .then((result) => {
-        console.log(result);
-        res.send(result);
+        let response = generateResponse((result + ' ').repeat(200 / result.length + 1));
+        res.send(response);
       })
 });
 
 app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
+
+function generateResponse(sentimentData) {
+  let specifiedResponse = hardcodedResponse(sentimentData);
+  if (specifiedResponse) {
+    return specifiedResponse;
+  } else {
+      let score = sentimentData.magnitude * sentimentData.score;
+      return genericResponse(score);
+  }
+}
 
 const sendMessage = ({ email, password, friends }) => {
   // console.log(`Email: ${email}, PW: ${password}, Friends: ${friends}`)
