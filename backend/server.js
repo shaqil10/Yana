@@ -19,12 +19,17 @@ app.post("/", (req, res) => {
 });
 
 app.post("/query", (req, res) => {
-  console.log(req.body);
-  analyzeText(req.body.text)
-      .then((result) => {
-        let response = generateResponse((result + ' ').repeat(200 / result.length + 1));
-        res.send(response);
-      })
+  console.log(req.body.text);
+  let newInputString = (req.body.text + " ").repeat(200 / req.body.text.length + 1);
+  let returnValue = inputDispatch(req.body.text, req.body.attempts);
+  if (!returnValue) {
+      analyzeText(newInputString)
+          .then((result) => {
+              res.send(result);
+          })
+  } else {
+      res.send(returnValue)
+  }
 });
 
 app.listen(PORT, () => {
@@ -68,7 +73,7 @@ function inputDispatch(userInput, numAttempts) {
         break;
 
         default:
-        return generateResponse(userInput);
+        return false;
         break;
     }
 }
@@ -117,7 +122,7 @@ function hardcodedResponse(text, level) {
   let response;
 
   for (let phrase of phrases_level_3) {
-    if (text.contains(phrase)) {
+    if (text.includes(phrase)) {
       const responses_level_3 = [
         'This sounds like an emergency. I am reaching out to a friend now.',
         'Don\'t worry - Help is on the way.',
@@ -128,7 +133,7 @@ function hardcodedResponse(text, level) {
   }
 
   for (let phrase of phrases_level_2) {
-    if (text.contains(phrase)) {
+    if (text.includes(phrase)) {
       const responses_level_2 = [
         'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
         'I\'m sorry to hear that.',
