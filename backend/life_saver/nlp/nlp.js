@@ -59,7 +59,7 @@ async function analyzeText(
     classify_content = true
 ) {
   const language = require("@google-cloud/language"); // Imports the Google cloud client library
-  const key = {keyFilename: '../../../gcloud-language-key/RU-Hacks-2020-key.json'}; // Filename of authentication key
+  const key = {keyFilename: '../gcloud-language-key/RU-Hacks-2020-key.json'}; // Filename of authentication key
   const client = new language.LanguageServiceClient(key); // Create client
   const document = { content: text, type: "PLAIN_TEXT" }; // Create document representing provided text
 
@@ -212,5 +212,7 @@ analysis = analyzeTextWrapper(text).then(
       console.log();
     }
 );
+
+module.exports = analyzeText;
 
 

@@ -1,4 +1,4 @@
-const analyzeText = require("../client/src/nlp/nlp");
+const analyzeText = require("../backend/life_saver/nlp/nlp");
 const express = require("express");
 const login = require("facebook-chat-api");
 const cors = require("cors");
@@ -18,8 +18,9 @@ app.post("/", (req, res) => {
   sendMessage(req.body);
 });
 
-app.post("/", (req, res) => {
-  analyzeText(req.data)
+app.post("/query", (req, res) => {
+  console.log(req.body);
+  analyzeText(req.body.text)
       .then((result) => {
         console.log(result);
         return result;

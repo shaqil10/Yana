@@ -4,7 +4,6 @@ import ChatWindow from "./chat-window/ChatWindow";
 import Footer from "./layouts/Footer";
 import Header from "./layouts/Header";
 import axios from "axios";
-import nlp from '../nlp/nlp';
 
 function App() {
   async function sendFbMessage() {
