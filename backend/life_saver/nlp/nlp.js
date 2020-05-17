@@ -169,7 +169,7 @@ const text =
 
 console.log(`Original text:\n${text}\n`);
 
-analysis = analyzeTextWrapper(text).then(
+analysis = analyzeTextWrapper(text.replace(/'\n'/g, ' ')).then(
     ([
        sentiment_result,
        entity_result,
