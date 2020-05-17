@@ -1,28 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, Router } from "@reach/router";
+import { Link } from "@reach/router";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ChatWindow from '../chat-window/ChatWindow';
 // import axios from 'axios';
 
-const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [submitted, setSubmitted] = useState(false);
-    const [first, setFirst] = useState([]);
-    const [second, setSecond] = useState([]);
-    const [third, setThird] = useState([]);
-    const [friends, setFriends] = useState([]);
-
-    useEffect(() => {
-        if (submitted) {
-            console.log(`Email: ${email}, Password: ${password}, friends: ${friends}`);
-            //set email and password states and pass it to chat window
-        }
-    }, [submitted, setSubmitted]);
-
+const LoginPage = ({ handleEmail, handlePassword, handleFirst, handleSecond, handleThird, handleClick }) => {
     // useEffect(() => {
     //     async function sendFbMessage() {
     //         const res = await axios.post("http://localhost:4000/", {
@@ -47,7 +31,7 @@ const LoginPage = () => {
                         name="email"
                         id="standard-basic"
                         label="Email"
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={handleEmail}
                     />
                 </Grid>
             </Grid>
@@ -62,7 +46,7 @@ const LoginPage = () => {
                         name="password"
                         id="standard-basic"
                         label="Password"
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={handlePassword}
                     />
                 </Grid>
             </Grid>
@@ -77,7 +61,7 @@ const LoginPage = () => {
                         name="friend"
                         id="standard-basic"
                         label="Friend"
-                        onChange={e => setFirst([e.target.value])}
+                        onChange={handleFirst}
                     />
                 </Grid>
             </Grid>
@@ -89,7 +73,7 @@ const LoginPage = () => {
                         name="friend"
                         id="standard-basic"
                         label="Friend"
-                        onChange={e => setSecond([e.target.value])}
+                        onChange={handleSecond}
                     />
                 </Grid>
             </Grid>
@@ -101,7 +85,7 @@ const LoginPage = () => {
                         name="friend"
                         id="standard-basic"
                         label="Friend"
-                        onChange={e => setThird([e.target.value])}
+                        onChange={handleThird}
                     />
                 </Grid>
             </Grid>
@@ -109,22 +93,11 @@ const LoginPage = () => {
                 <Button
                     id="login-button"
                     type="submit"
-                    onClick={() => {
-                        setSubmitted(true);
-                        setFriends(first.concat(second).concat(third));
-                    }}
+                    onClick={handleClick}
                 >
                     Log in
                 </Button>
             </Link>
-            <Router>
-                <ChatWindow
-                    email={email}
-                    password={password}
-                    friends={friends}
-                    path="/chat-window"
-                />
-            </Router>
         </div >
     );
 }

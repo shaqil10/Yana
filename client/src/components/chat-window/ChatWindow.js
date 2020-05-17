@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import InputField from "../input-field/InputField";
 import axios from "axios";
 
-function ChatWindow(props) {
+function ChatWindow({ email, password, friends }) {
+  const sendFbMessage = () => {
+    axios.post("http://localhost:4000", {
+      email: email,
+      password: password,
+      friends: friends
+    })
+  }
+
   const [values, setValues] = useState({});
   const handleFieldChange = (value) => {
     setValues({ ...values, input: value })
@@ -13,8 +21,13 @@ function ChatWindow(props) {
       });
     console.log(values.sentiment);
   };
-  const field = <InputField onClick={handleFieldChange} />;
-  return <div>{field}</div>;
+
+  return (
+    <div>
+      <h1> Hi </h1>
+      {/* <InputField onClick={handleFieldChange} /> */}
+    </div>
+  );
 }
 
 export default ChatWindow;
