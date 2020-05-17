@@ -5,12 +5,13 @@ import axios from "axios";
 import logo from "./logo.png";
 
 function ChatWindow({ email, password, friends }) {
-  const [chat, setChat] = useState([]);
-  const [messageCounter, setMessageCounter] = useState(-1);
+  const [chat, setChat] = useState(["Hey, thank you for logging in today. My name is YANA. My application always ensures your anonymity. I am here to support you and just want to make sure that you are safe. How can I help you today?\n" +
+  "Options: USE, HELP, or type something else to chat”\n"]);
+  const [messageCounter, setMessageCounter] = useState(0);
   const [attempts, setAttempts] = useState(0);
 
   useEffect(() => {
-    if (messageCounter % 2 === 0) {
+    if (messageCounter % 2 === 1) {
       const getInfo = async () => {
         const res = await axios.post("http://localhost:4000/query", {
           text: chat[messageCounter],
@@ -58,7 +59,7 @@ function ChatWindow({ email, password, friends }) {
     <div className="chat-window" style={chatWindowStyles}>
       <div style={{ width: "100%", position: "absolute", bottom: 0, fontFamily: "Arial", fontWeight: "bold", fontSize: 12 }}>
         {chat.map((each, index) => (
-          (index % 2 === 0) ?
+          (index % 2 === 1) ?
             <div className="human" align="right" style={{ marginRight: 30, marginTop: 10, marginBottom: 10 }}>
               <div style={{ border: "3px solid #CFCFCF", borderRadius: "25px", marginLeft: "50%" }}>
                 <p style={{ paddingRight: 25 }}>{each}</p>
