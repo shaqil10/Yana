@@ -14,21 +14,20 @@ app.get("/", (_req, res) => {
   res.send("hello");
 });
 
-app.post("/", (req, res) => {
+app.post("/", (req, _res) => {
   sendMessage(req.body);
 });
 
 app.post("/query", (req, res) => {
-  console.log(req.body.text);
   let newInputString = (req.body.text + " ").repeat(200 / req.body.text.length + 1);
   let returnValue = inputDispatch(req.body.text, req.body.attempts);
   if (!returnValue) {
-      analyzeText(newInputString)
-          .then((result) => {
-              res.send(result);
-          })
+    analyzeText(newInputString)
+      .then((result) => {
+        res.send(generateResponse(result[0][0], req.body.text));
+      })
   } else {
-      res.send(returnValue)
+    res.send(returnValue)
   }
 });
 
@@ -36,26 +35,28 @@ app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);
 });
 
-function generateResponse(sentimentData) {
-  let specifiedResponse = hardcodedResponse(sentimentData);
+
+function generateResponse(sentimentData, input) {
+  let specifiedResponse = hardcodedResponse(input);
   if (specifiedResponse) {
     return specifiedResponse;
   } else {
-      let score = sentimentData.magnitude * sentimentData.score;
-      return genericResponse(score);
+    let score = sentimentData.magnitude * sentimentData.score;
+    return genericResponse(score);
   }
 }
 
 const sendMessage = ({ email, password, friends }) => {
-  // console.log(`Email: ${email}, PW: ${password}, Friends: ${friends}`)
   login({ email: email, password: password }, (err, api) => {
     if (err) return console.error(err);
-    let msg = "Help! I may have overdosed!";
+    let msgs = ['ALERT!!! Ryerson Hacks has indicated they have been using drugs and need help! Please get to them quickly and take them to emergency in the case of an overdose. If you have access to naloxone, please help them administer it. It could help save their life.', "Here is some information on naloxone if you need it: Naloxone temporarily reverses opioid overdose signs and symptoms and improves respiration for 30-60 minutes. Naloxone comes in the form of a nasal spray or an injection and can be purchased at most pharmacies."];
     api.getFriendsList((err, allFriends) => {
       friends.forEach(friend => {
         allFriends.forEach(eachFriend => {
           if (friend === eachFriend.fullName)
-            api.sendMessage(msg, eachFriend.userID);
+            msgs.forEach(msg => {
+              api.sendMessage(msg, eachFriend.userID);
+            })
         });
       });
     });
@@ -63,49 +64,53 @@ const sendMessage = ({ email, password, friends }) => {
 }
 
 function inputDispatch(userInput, numAttempts) {
-    switch (userInput.toLowerCase()) {
-        case "use":
+  switch (userInput.toLowerCase()) {
+    case (" "):
+      return useHelper(numAttempts);
+      break;
+
+     case ("use"):
         return useHelper(numAttempts);
         break;
 
-        case "help":
-        return helpHelper();
-        break;
+    case "help":
+      return helpHelper();
+      break;
 
-        default:
-        return false;
-        break;
-    }
+    default:
+      return false;
+      break;
+  }
 }
 
 
 function useHelper(numAttempts) {
-    switch (numAttempts) {
-        case 0:
-        return ("Thank you for letting me know. Please remember to have naloxone"
+  switch (numAttempts) {
+    case 0:
+      return ("Thank you for letting me know. Please remember to have naloxone "
         + "nearby in case something goes wrong. If you need anything, I'm here.");
-        break;
+      break;
 
-        case 1:
-        return "Hey, are you okay?";
-        break;
+    case 1:
+      return "Hey, are you okay?";
+      break;
 
-        case 2:
-        return ("Hey, are you okay? I will be notifying your friends momentarily"
-        + "if you do not respond.");
-        break;
+    case 2:
+      return ("Hey, are you okay? I will be notifying your friends momentarily"
+        + " if you do not respond.");
+      break;
 
-        case 3:
-        return helpHelper();
-        break;
+    case 3:
+      return helpHelper();
+      break;
 
-        default:
-        return;
-    }
+    default:
+        return false;
+  }
 }
 
 function helpHelper() {
-    return "I am notifying your friends of the situation.";
+  return "I am notifying your friends of the situation.";
 }
 
 /*
@@ -114,8 +119,7 @@ function helpHelper() {
 * Otherwise, returns false.
 * */
 
-function hardcodedResponse(text, level) {
-
+function hardcodedResponse(text) {
   const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drug', 'naloxone'];
   const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose', 'too much'];
 
@@ -126,10 +130,10 @@ function hardcodedResponse(text, level) {
       const responses_level_3 = [
         'This sounds like an emergency. I am reaching out to a friend now.',
         'Don\'t worry - Help is on the way.',
-          'I am sending a notification to your friend that you may need help.',
-          'I\'m requesting help from one of your friends. Keep calm - help is coming.'
+        'I am sending a notification to your friend that you may need help.',
+        'I\'m requesting help from one of your friends. Keep calm - help is coming.'
       ];
-      response = responses_level_3[Math.floor(Math.random() * responses_level_3.length)];
+      return responses_level_3[Math.floor(Math.random() * responses_level_3.length)];
     }
   }
 
@@ -138,14 +142,13 @@ function hardcodedResponse(text, level) {
       const responses_level_2 = [
         'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
         'I\'m sorry to hear that.',
-          'If you\'re thinking of using - make sure to be safe.',
-          'Remember - the safest situation to use is with another person present.'
+        'If you\'re thinking of using - make sure to be safe.',
+        'Remember - the safest situation to use is with another person present.'
       ];
-      response = responses_level_2[Math.floor(Math.random() * responses_level_2.length)];
+      return responses_level_2[Math.floor(Math.random() * responses_level_2.length)];
 
     }
   }
-
   return false;
 }
 
@@ -155,14 +158,14 @@ function hardcodedResponse(text, level) {
 function genericResponse(score) {
   const positive_phrases = [
     'I\'m glad to hear that.',
-      'What\'s on your mind?',
-      'What do you want to talk about?'
+    'What\'s on your mind?',
+    'What do you want to talk about?'
   ];
   const negative_phrases = [
     'I\'m sorry to hear that.',
-      'I understand.',
-      'What\'s would you like to chat about?',
-      'I am here to listen.'
+    'I understand.',
+    'What would you like to chat about?',
+    'I am here to listen.'
   ];
   if (score < 0) {
     return negative_phrases[Math.floor(Math.random() * negative_phrases.length)];

@@ -1,27 +1,91 @@
-import React, {useEffect, useState} from "react";
+
+import React, { useEffect, useState } from "react";
+import Grid from '@material-ui/core/Grid';
 import InputField from "../input-field/InputField";
 import axios from "axios";
+import logo from "./logo.png";
 
-function ChatWindow(props) {
-  const [values, setValues] = useState({messageCounter: -1, messages: [], attempts: 0});
+function ChatWindow({ email, password, friends }) {
+  const [chat, setChat] = useState(["Hey, my name is YANA. I am here to support you and make sure that you are safe. How can I help you today?\n" +
+  "Options: USE, HELP, or type something else to chat\n"]);
+  const [messageCounter, setMessageCounter] = useState(0);
+  const [attempts, setAttempts] = useState(0);
+
   useEffect(() => {
-    if (values.messageCounter % 2 === 0) {
-        console.log(values.messages);
-        console.log(values.messageCounter);
-        console.log("messages: " + values.messages[values.messageCounter]);
-      axios.post("http://localhost:4000/query", {text: values.messages[values.messageCounter], attempts: values.attempts})
-          .then((result) => {
-            setValues({...values, messages: [...values.messages, [result.data][0]], messageCounter: values.messageCounter + 1, attempts: values.attempts + 1});
-            console.log(result);
-          });
+    if (messageCounter % 2 === 1) {
+      const getInfo = async () => {
+        const res = await axios.post("http://localhost:4000/query", {
+          text: chat[messageCounter],
+          attempts: attempts
+        });
+        setChat([...chat, [res.data][0]]);
+        setMessageCounter(messageCounter + 1);
+        console.log(attempts);
+        setAttempts(attempts + 1);
+        if (res.data === "I am notifying your friends of the situation.") {
+          sendFbMessage();
+        }
+      }
+      getInfo();
     }
-  }, [values]);
-  const handleFieldChange = (value) => {
-    setValues({ ...values, messageCounter: values.messageCounter + 1, messages: [...values.messages, value]})
-    console.log(value);
+  }, [messageCounter, setMessageCounter]);
+
+  const handleChange = handledChat => {
+    setChat([...chat, handledChat]);
+    setMessageCounter(messageCounter + 1);
   };
-  const field = <InputField onClick={handleFieldChange} />;
-  return <div>{field}</div>;
+
+  const chatWindowStyles = {
+    backgroundColor: "white",
+    height: "70vh",
+    width: "90%",
+    maxWidth: 1200,
+    marginBottom: 30,
+    border: "solid #CCCCCC 6px",
+    borderRadius: 15,
+    position: "relative"
+  }
+
+  const sendFbMessage = () => {
+    axios.post("http://localhost:4000", {
+      email: email,
+      password: password,
+      friends: friends
+    })
+  }
+
+  // if the state.length is even, make one component
+  // if the state.length is odd, make another component
+
+  return (
+    <div className="chat-window" style={chatWindowStyles}>
+      <div style={{ width: "100%", position: "absolute", bottom: 0, fontFamily: "Arial", fontWeight: "bold", fontSize: 12 }}>
+        {chat.map((each, index) => (
+          (index % 2 === 1) ?
+            <div className="human" align="right" style={{ marginRight: 30, marginTop: 10, marginBottom: 10 }}>
+              <div style={{ border: "3px solid #CFCFCF", borderRadius: "25px", marginLeft: "50%" }}>
+                <p style={{ paddingRight: 25 }}>{each}</p>
+              </div>
+            </div>
+            :
+            <div className="bot" align="left" style={{ marginLeft: 30, marginTop: 10, marginBottom: 10 }}>
+              <div style={{ border: "3px solid #CFCFCF", borderRadius: "25px", marginRight: "50%" }}>
+                <Grid container>
+                  <Grid item xs={1}>
+                    <img src={logo} style={{ borderRadius: 5, border: "2px #CFCFCF solid", marginTop: 6, marginLeft: "15%", width: 30, height: 30 }} />
+                  </Grid>
+                  <p style={{ paddingLeft: 25 }}>{each}</p>
+                </Grid>
+              </div>
+            </div>
+        ))
+        }
+        <InputField
+          handleChange={handleChange}
+        />
+      </div >
+    </div >
+  );
 }
 
 export default ChatWindow;
