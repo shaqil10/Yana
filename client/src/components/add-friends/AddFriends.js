@@ -18,9 +18,9 @@ const AddFriends = ({ email, password }) => {
         setSubmitted(true);
     }
 
-    useEffect(() => {
-        console.log(friends);
-    }, [submitted, setSubmitted])
+    // useEffect(() => {
+    //     console.log(friends);
+    // }, [submitted, setSubmitted])
 
     return (
         <div className="add-friends">
