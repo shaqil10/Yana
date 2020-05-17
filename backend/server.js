@@ -46,3 +46,34 @@ const sendMessage = ({ email, password, friends }) => {
     });
   });
 }
+
+function hardcodedResponse(text, level) {
+
+  const generic_responses = [
+      'something'
+  ];
+
+  const phrases_level_1 = ['feeling better'];
+  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', ];
+  const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
+
+  let response;
+
+  for (let phrase of phrases_level_3) {
+    if (text.contains(phrase)) {
+      // TODO - hard-code stuff
+    }
+  }
+
+  for (let phrase of phrases_level_2) {
+    if (text.contains(phrase)) {
+      // TODO - hard-code stuff
+    }
+  }
+
+  for (let phrase of phrases_level_1) {
+    if (text.contains(phrase)) {
+      // TODO - hard-code stuff
+    }
+  }
+}
