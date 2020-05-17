@@ -59,13 +59,14 @@ async function analyzeText(
   classify_content = true
 ) {
   const language = require("@google-cloud/language"); // Imports the Google cloud client library
-  const client = new language.LanguageServiceClient(); // Create client
+  const key = { keyFilename: '../gcloud-language-key/RU-Hacks-2020-key.json' }; // Filename of authentication key
+  const client = new language.LanguageServiceClient(key); // Create client
   const document = { content: text, type: "PLAIN_TEXT" }; // Create document representing provided text
 
   // Detect the sentiment of the document, if requested
   let sentiment_result = null;
   if (analyze_sentiment) {
-    [sentiment_result_raw] = await client.analyzeSentiment({ document });
+    let [sentiment_result_raw] = await client.analyzeSentiment({ document });
     sentiment_result = [
       {
         magnitude: sentiment_result_raw.documentSentiment.magnitude,
@@ -84,14 +85,14 @@ async function analyzeText(
   // Detect the entities of the document, if requested
   let entity_result = null;
   if (analyze_entities) {
-    [entity_result_raw] = await client.analyzeEntities({ document });
+    let [entity_result_raw] = await client.analyzeEntities({ document });
     entity_result = entity_result_raw.entities;
   }
 
   // Detect the syntax of the document, if requested
   let syntax_result = null;
   if (analyze_syntax) {
-    [syntax_result_raw] = await client.analyzeSyntax({ document });
+    let [syntax_result_raw] = await client.analyzeSyntax({ document });
     syntax_result = [];
     for (const token of syntax_result_raw.tokens) {
       syntax_result.push({
@@ -104,7 +105,7 @@ async function analyzeText(
   // Classify the content of the document, if requested
   let classify_result = null;
   if (classify_content) {
-    [classify_result_raw] = await client.classifyText({ document });
+    let [classify_result_raw] = await client.classifyText({ document });
     classify_result = [];
     for (const category of classify_result_raw.categories) {
       classify_result.push({
@@ -116,8 +117,40 @@ async function analyzeText(
 
   return [sentiment_result, entity_result, syntax_result, classify_result];
 }
+async function analyzeTextWrapper(
+  text,
+  analyze_sentiment = true,
+  analyze_entities = true,
+  analyze_syntax = true,
+  classify_content = true
+) {
+  let sentiment_result;
+  let entity_result;
+  let syntax_result;
+  let classify_result;
+  try {
+    const result = await analyzeText(
+      text, analyze_sentiment, analyze_entities, analyze_syntax, classify_content
+    );
+    sentiment_result = result[0];
+    entity_result = result[1];
+    syntax_result = result[2];
+    classify_result = result[3];
+  } catch (err) {
+    const sentiment_result_dummy = [{ magnitude: 0, score: 0 }, { text: 'dummy_text', magnitude: 0, score: 0 }];
+    const entity_result_dummy = [{ name: 'dummy_name', type: 'OTHER', salience: 0 }];
+    const syntax_result_dummy = [{ word: 'dummy_word', partOfSpeech: 'NOUN' }];
+    const classify_result_dummy = [{ name: 'dummy_category', confidence: 0 }];
 
-text =
+    sentiment_result = analyze_sentiment ? sentiment_result_dummy : null;
+    entity_result = analyze_entities ? entity_result_dummy : null;
+    syntax_result = analyze_syntax ? syntax_result_dummy : null;
+    classify_result = classify_content ? classify_result_dummy : null;
+  }
+  return [sentiment_result, entity_result, syntax_result, classify_result];
+}
+
+const text =
   "What the fuck did you just fucking say about me, you little bitch? I'll have you know I\n" +
   "graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on\n" +
   "Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper\n" +
@@ -134,49 +167,52 @@ text =
   "would have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price,\n" +
   "you goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.";
 
-console.log(`Original text:\n${text}\n`);
+// console.log(`Original text:\n${text}\n`);
 
-analysis = analyzeText(text, true).then(
-  ([
-    sentiment_result,
-    entity_result,
-    syntax_result,
-    entity_sentiment_result,
-    classify_result,
-  ]) => {
-    console.log(`Overall sentiment:
-    \tMagnitude: ${sentiment_result[0].magnitude}
-    \tScore: ${sentiment_result[0].score}`);
-    console.log();
-    console.log("Line by line:");
-    for (const sentence in sentiment_result) {
-      if (sentence > 0) {
-        console.log(
-          `\tText: ${sentiment_result[sentence].text.replace("\n", " ")}`
-        );
-        console.log(`\tMagnitude: ${sentiment_result[sentence].magnitude}`);
-        console.log(`\tScore: ${sentiment_result[sentence].score}`);
-        console.log();
-      }
-    }
+// analysis = analyzeTextWrapper(text.replace(/'\n'/g, ' ')).then(
+//     ([
+//        sentiment_result,
+//        entity_result,
+//        syntax_result,
+//        classify_result,
+//      ]) => {
+//       console.log(`Overall sentiment:
+//     \tMagnitude: ${sentiment_result[0].magnitude}
+//     \tScore: ${sentiment_result[0].score}`);
+//       console.log();
+//       console.log("Line by line:");
+//       for (const sentence in sentiment_result) {
+//         if (sentence > 0) {
+//           console.log(
+//               `\tText: ${sentiment_result[sentence].text.replace("\n", " ")}`
+//           );
+//           console.log(`\tMagnitude: ${sentiment_result[sentence].magnitude}`);
+//           console.log(`\tScore: ${sentiment_result[sentence].score}`);
+//           console.log();
+//         }
+//       }
 
-    console.log("Entities:");
-    for (const entity of entity_result) {
-      console.log(`\tName: ${entity.name.replace("\n", " ")} (${entity.type})`);
-      console.log(`\tSalience: ${entity.salience}`);
-      console.log();
-    }
+//       console.log("Entities:");
+//       for (const entity of entity_result) {
+//         console.log(`\tName: ${entity.name.replace("\n", " ")} (${entity.type})`);
+//         console.log(`\tSalience: ${entity.salience}`);
+//         console.log();
+//       }
 
-    console.log("Syntax:");
-    for (const part of syntax_result) {
-      console.log(`\tWord: ${part.word} (${part.partOfSpeech})`);
-    }
-    console.log();
+//       console.log("Syntax:");
+//       for (const part of syntax_result) {
+//         console.log(`\tWord: ${part.word} (${part.partOfSpeech})`);
+//       }
+//       console.log();
 
-    // console.log('Categories:');
-    // for (const category of classify_result) {
-    //     console.log(`\tName: ${category.name} (confidence: ${category.confidence})`);
-    // }
-    // console.log();
-  }
-);
+//       console.log('Categories:');
+//       for (const category of classify_result) {
+//         console.log(`\tName: ${category.name} (confidence: ${category.confidence})`);
+//       }
+//       console.log();
+//     }
+// );
+
+module.exports = analyzeText;
+
+

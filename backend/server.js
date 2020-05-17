@@ -14,8 +14,8 @@ app.get("/", (_req, res) => {
   res.send("hello");
 });
 
-app.post("/", (req, res) => {
-  // sendMessage(req.body);
+app.post("/", (req, _res) => {
+  sendMessage(req.body);
 });
 
 app.post("/query", (req, res) => {
@@ -47,15 +47,17 @@ function generateResponse(sentimentData) {
 }
 
 const sendMessage = ({ email, password, friends }) => {
-  // console.log(`Email: ${email}, PW: ${password}, Friends: ${friends}`)
+  console.log(`Email: ${email}, PW: ${password}, Friends: ${friends}`)
   login({ email: email, password: password }, (err, api) => {
     if (err) return console.error(err);
-    let msg = "Help! I may have overdosed!";
+    let msgs = ['ALERT!!! Ryerson Hacks has indicated they have been using drugs and need help! Please get to them quickly and take them to emergency in the case of an overdose. If you have access to naloxone, please help them administer it. It could help save their lives.', "Here is some information on naloxone if you need it: Naloxone temporarily reverses opioid overdose signs and symptoms and improves respiration for 30-60 minutes. Naloxone comes in the form of a nasal spray or an injection and can be purchased at most pharmacies"];
     api.getFriendsList((err, allFriends) => {
       friends.forEach(friend => {
         allFriends.forEach(eachFriend => {
           if (friend === eachFriend.fullName)
-            api.sendMessage(msg, eachFriend.userID);
+            msgs.forEach(msg => {
+              api.sendMessage(msg, eachFriend.userID);
+            })
         });
       });
     });
@@ -64,7 +66,7 @@ const sendMessage = ({ email, password, friends }) => {
 
 function inputDispatch(userInput, numAttempts) {
   switch (userInput.toLowerCase()) {
-    case "use":
+    case (" " || "hi im about to start"):
       return useHelper(numAttempts);
       break;
 
@@ -82,7 +84,7 @@ function inputDispatch(userInput, numAttempts) {
 function useHelper(numAttempts) {
   switch (numAttempts) {
     case 0:
-      return ("Thank you for letting me know. Please remember to have naloxone"
+      return ("Thank you for letting me know. Please remember to have naloxone "
         + "nearby in case something goes wrong. If you need anything, I'm here.");
       break;
 
@@ -114,7 +116,7 @@ function helpHelper() {
 * Otherwise, returns false.
 * */
 
-function hardcodedResponse(text, level) {
+function hardcodedResponse(text, _level) {
 
   const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drug', 'naloxone'];
   const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
