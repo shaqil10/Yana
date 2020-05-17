@@ -59,31 +59,41 @@ const sendMessage = ({ email, password, friends }) => {
 
 function hardcodedResponse(text, level) {
 
-  const generic_responses = [
-      'something'
-  ];
-
-  const phrases_level_1 = ['feeling better'];
-  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', ];
+  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drugs'];
   const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
 
   let response;
 
   for (let phrase of phrases_level_3) {
     if (text.contains(phrase)) {
-      // TODO - hard-code stuff
+      const responses_level_3 = [
+        'This sounds like an emergency. I am reaching out to a friend now.',
+        'Don\'t worry - Help is on the way.',
+          'I am sending a notification to your friend that you may need help.'
+      ];
+      response = responses_level_3[Math.floor(Math.random() * responses_level_3.length)];
     }
   }
 
   for (let phrase of phrases_level_2) {
     if (text.contains(phrase)) {
-      // TODO - hard-code stuff
+      const responses_level_2 = [
+        'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
+        'I\'m sorry to hear that.',
+          'If you\'re thinking of using - make sure to be safe.',
+      ];
+      response = responses_level_2[Math.floor(Math.random() * responses_level_2.length)];
+
     }
   }
 
-  for (let phrase of phrases_level_1) {
-    if (text.contains(phrase)) {
-      // TODO - hard-code stuff
-    }
+  return false;
+}
+
+function genericResponse(score) {
+  if (score < 0) {
+    return;
+  } else {
+    return;
   }
 }
