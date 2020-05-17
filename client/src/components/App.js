@@ -30,7 +30,7 @@ const App = () => {
   }
   const handleClick = () => {
     setSubmitted(true);
-    setFriends(first.concat(second).concat(third));
+    setFriends([first, second, third]);
   }
   useEffect(() => { }, [submitted, setSubmitted]);
 

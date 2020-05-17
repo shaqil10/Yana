@@ -36,7 +36,6 @@ const LoginPage = ({ handleEmail, handlePassword, handleFirst, handleSecond, han
 
             <div styles={{ width: "100" }}>
                 <TextField
-                    name="friend"
                     id="standard-basic"
                     label="Friend"
                     onChange={handleFirst}

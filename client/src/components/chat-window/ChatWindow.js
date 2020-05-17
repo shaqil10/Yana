@@ -17,6 +17,9 @@ function ChatWindow({ email, password, friends }) {
         setChat([...chat, [res.data][0]]);
         setMessageCounter(messageCounter + 1);
         setAttempts(attempts + 1);
+        if (res.data === "I am notifying your friends of the situation.") {
+          sendFbMessage();
+        }
       }
       getInfo();
     }
@@ -26,7 +29,6 @@ function ChatWindow({ email, password, friends }) {
     setChat([...chat, handledChat]);
     setMessageCounter(messageCounter + 1);
   };
-
 
   const chatWindowStyles = {
     backgroundColor: "white",
