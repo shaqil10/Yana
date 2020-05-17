@@ -35,7 +35,7 @@ function ChatWindow({ email, password, friends }) {
 
   const chatWindowStyles = {
     backgroundColor: "white",
-    height: "60vh",
+    height: "70vh",
     width: "90%",
     maxWidth: 1200,
     marginBottom: 30,
