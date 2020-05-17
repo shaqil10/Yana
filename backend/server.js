@@ -121,8 +121,9 @@ function helpHelper() {
 
 function hardcodedResponse(text) {
   const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drug', 'naloxone'];
-  const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
-  text = text.toLowerCase();
+  const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose', 'too much'];
+
+  let response;
 
   for (let phrase of phrases_level_3) {
     if (text.includes(phrase)) {
