@@ -57,9 +57,14 @@ const sendMessage = ({ email, password, friends }) => {
   });
 }
 
+/*
+* If input contains one or more flagged words,
+* returns a randomly selected response corresponding to level of severity.
+* Otherwise, returns false.
+* */
 function hardcodedResponse(text, level) {
 
-  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drugs'];
+  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drugs', 'naloxone'];
   const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
 
   let response;
@@ -90,10 +95,19 @@ function hardcodedResponse(text, level) {
   return false;
 }
 
+/*
+* Returns a response based on whether the provided score is positive or negative. TODO.
+* */
 function genericResponse(score) {
+  const positive_phrases = [
+    // TODO
+  ];
+  const negative_phrases = [
+    // TODO
+  ];
   if (score < 0) {
-    return;
+    return negative_phrases[Math.floor(Math.random() * negative_phrases.length)];
   } else {
-    return;
+    return positive_phrases[Math.floor(Math.random() * positive_phrases.length)];
   }
 }
