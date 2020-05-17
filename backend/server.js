@@ -103,33 +103,58 @@ function helpHelper() {
     return "I am notifying your friends of the situation.";
 }
 
+/*
+* If input contains one or more flagged words,
+* returns a randomly selected response corresponding to level of severity.
+* Otherwise, returns false.
+* */
+
 function hardcodedResponse(text, level) {
 
-  const generic_responses = [
-      'something'
-  ];
-
-  const phrases_level_1 = ['feeling better'];
-  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', ];
+  const phrases_level_2 = ['nobody', 'alone', 'depressed', 'sad', 'help', 'drugs', 'naloxone'];
   const phrases_level_3 = ['need help', 'kill myself', 'die', 'overdose'];
 
   let response;
 
   for (let phrase of phrases_level_3) {
     if (text.contains(phrase)) {
-      // TODO - hard-code stuff
+      const responses_level_3 = [
+        'This sounds like an emergency. I am reaching out to a friend now.',
+        'Don\'t worry - Help is on the way.',
+          'I am sending a notification to your friend that you may need help.'
+      ];
+      response = responses_level_3[Math.floor(Math.random() * responses_level_3.length)];
     }
   }
 
   for (let phrase of phrases_level_2) {
     if (text.contains(phrase)) {
-      // TODO - hard-code stuff
+      const responses_level_2 = [
+        'It seems like you\'re not doing too well. Remember to be safe if you think you might use.',
+        'I\'m sorry to hear that.',
+          'If you\'re thinking of using - make sure to be safe.',
+      ];
+      response = responses_level_2[Math.floor(Math.random() * responses_level_2.length)];
+
     }
   }
 
-  for (let phrase of phrases_level_1) {
-    if (text.contains(phrase)) {
-      // TODO - hard-code stuff
-    }
+  return false;
+}
+
+/*
+* Returns a response based on whether the provided score is positive or negative. TODO.
+* */
+function genericResponse(score) {
+  const positive_phrases = [
+    // TODO
+  ];
+  const negative_phrases = [
+    // TODO
+  ];
+  if (score < 0) {
+    return negative_phrases[Math.floor(Math.random() * negative_phrases.length)];
+  } else {
+    return positive_phrases[Math.floor(Math.random() * positive_phrases.length)];
   }
 }
