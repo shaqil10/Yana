@@ -9,3 +9,8 @@ Users can also have conversations with YANA as it implements the Google Sentimen
 
 
 Collaborators: Eric Kim, Aidan Mathewson, Leo Sporn, Shaqil Rahemtulla
+
+![YANAlogin](https://user-images.githubusercontent.com/38693949/82143471-40aaf380-9812-11ea-9ab8-b902d2692f20.PNG)
+![YANAintro](https://user-images.githubusercontent.com/38693949/82143472-430d4d80-9812-11ea-8842-2a977f4002f8.PNG)
+![YANAsample](https://user-images.githubusercontent.com/38693949/82143473-44d71100-9812-11ea-9683-946eb8a0da80.PNG)
+![FBMessage](https://user-images.githubusercontent.com/38693949/82143650-5bca3300-9813-11ea-870e-2e6e46bb40e9.jpg)
