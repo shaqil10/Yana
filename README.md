@@ -1,4 +1,4 @@
-##You Are Not Alone (YANA)
+### You Are Not Alone (YANA)
 
 You Are Not Alone (YANA) is an application that was built in response to the overdose crisis in Canada. YANA is aimed to be a support system for those with substance use challenges and offers a way for their friends to be immediately notified in the event of an overdose. The prompts of our ChatBot (YANA) are phrased in a way to show that the main issue is NOT the usage of these substances, but reinforces that they are being safe and taking precautions so they do not MIS-use.
 Users sign up via Facebook, provide a list of friends, and authorize the application to notify these friends in the case of an emergency. In the future, there will be an option to notify healthcare authorities in case of an emergency, but this will be completely up to the discretion of the user.
